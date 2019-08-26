@@ -8,16 +8,88 @@ Aircraft::Aircraft(glm::vec3 position) {
 	rollRight = 0.0f;
 	yawLeft = 0.0f;
 	yawRight = 0.0f;
+
 	forward = glm::vec3(0, 0, -1);
 	up = glm::vec3(0, 1, 0);
 	left = glm::vec3(-1, 0, 0);
 	quaternion = glm::quat(1, 0, 0, 0);
-	onLand = true;
+
+	gravity = CAP_GRAVITY;
+	thrust = 0;
+	forwardSpeed = 0;
+	acceleration = 0;
+
+	onLand = false;
+
+	if (onLand == false) {
+		groundYSpeed = 1;
+	}
+	else {
+		groundYSpeed = 0;
+	}
 }
 
 void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 	control.tick();
 
+	orientation(deltaTime, control);
+	move(deltaTime, control, camara);
+
+	glm::vec3 pitchForward(forward.x, 0, forward.z);
+	float pitch = glm::degrees(glm::acos(glm::dot(pitchForward, forward)));
+	glm::vec3 rollLeft(left.x, 0, left.z);
+	float roll = glm::degrees(glm::acos(glm::dot(rollLeft, left)));
+
+	if (position.y <= 1) {
+		if (pitch >= 10.0f || roll >= 10.0f) {
+			std::cout << "CRASH" << std::endl;
+			forward = glm::vec3(0, 0, -1);
+			up = glm::vec3(0, 1, 0);
+			left = glm::vec3(-1, 0, 0);
+			quaternion = glm::quat(1, 0, 0, 0);
+			position = glm::vec3(0, 10, 35);
+			gravity = CAP_GRAVITY;
+			thrust = 0;
+			forwardSpeed = 0;
+			acceleration = 0;
+		}
+		position.y = 1;
+		onLand = true;
+		acceleration = 0;
+		groundYSpeed = 0;
+		float yawAngle = 0;
+		forward = glm::normalize(glm::vec3(forward.x, 0, forward.z));
+		up = glm::vec3(0, 1, 0);
+		left = glm::normalize(glm::vec3(left.x, 0, left.z));
+
+		if (glm::cross(glm::normalize(left), glm::vec3(-1, 0, 0)).y >= 0) {
+			yawAngle = glm::degrees(glm::acos(glm::dot(glm::vec3(-1.0f, 0.0f, 0.0f), left)));
+		}
+
+		if (glm::cross(glm::normalize(left), glm::vec3(-1, 0, 0)).y <= 0) {
+			yawAngle = 360 - glm::degrees(glm::acos(glm::dot(glm::vec3(-1.0f, 0.0f, 0.0f), left)));
+		}
+
+		glm::vec3 eulerAngles(0, glm::radians(yawAngle), 0);
+		quaternion = glm::quat(eulerAngles);
+	}
+	else {
+		groundYSpeed = 1;
+		onLand = false;
+	}
+
+	if (thrust > 0) {
+		groundYSpeed = 1;
+	}
+	
+	
+	camara.position = position;
+	camara.quaternion = quaternion;
+	camara.direction = forward;
+
+}
+
+void Aircraft::orientation(float deltaTime,Controls control) {
 	if (control.leftArrow) {
 		rollLeft += 50 * deltaTime;
 		if (rollLeft > ROLL_SPEED) {
@@ -47,32 +119,6 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 		if (rollRight < 0) {
 			rollRight = 0.0f;
 		}
-	}
-
-	if (rollLeft > 0) {
-		float rollAngle = glm::radians(deltaTime * rollLeft);
-		float x = forward.x * sin(rollAngle / 2);
-		float y = forward.y * sin(rollAngle / 2);
-		float z = forward.z * sin(rollAngle / 2);
-		float w = cos(rollAngle / 2);
-		glm::quat q = glm::quat(w, x, y, z);
-		quaternion *= q;
-		forward = forward * q;
-		up = up * q;
-		left = left * q;
-	}
-
-	if (rollRight > 0) {
-		float rollAngle = glm::radians(-deltaTime * rollRight);
-		float x = forward.x * sin(rollAngle / 2);
-		float y = forward.y * sin(rollAngle / 2);
-		float z = forward.z * sin(rollAngle / 2);
-		float w = cos(rollAngle / 2);
-		glm::quat q = glm::quat(w, x, y, z);
-		quaternion *= q;
-		forward = forward * q;
-		up = up * q;
-		left = left * q;
 	}
 
 	if (control.upArrow) {
@@ -106,32 +152,6 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 		if (pitchDown < 0) {
 			pitchDown = 0.0f;
 		}
-	}
-
-	if (pitchUp > 0) {
-		float pitchAngle = glm::radians(deltaTime * pitchUp);
-		float x = left.x * sin(pitchAngle / 2);
-		float y = left.y * sin(pitchAngle / 2);
-		float z = left.z * sin(pitchAngle / 2);
-		float w = cos(pitchAngle / 2);
-		glm::quat q = glm::quat(w, x, y, z);
-		quaternion *= q;
-		forward = forward * q;
-		up = up * q;
-		left = left * q;
-	}
-
-	if (pitchDown > 0) {
-		float pitchAngle = glm::radians(-deltaTime * pitchDown);
-		float x = left.x * sin(pitchAngle / 2);
-		float y = left.y * sin(pitchAngle / 2);
-		float z = left.z * sin(pitchAngle / 2);
-		float w = cos(pitchAngle / 2);
-		glm::quat q = glm::quat(w, x, y, z);
-		quaternion *= q;
-		forward = forward * q;
-		up = up * q;
-		left = left * q;
 	}
 
 	if (control.keyA == true) {
@@ -168,6 +188,58 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 		}
 	}
 
+	if (rollLeft > 0) {
+		float rollAngle = glm::radians(deltaTime * rollLeft);
+		float x = forward.x * sin(rollAngle / 2);
+		float y = forward.y * sin(rollAngle / 2);
+		float z = forward.z * sin(rollAngle / 2);
+		float w = cos(rollAngle / 2);
+		glm::quat q = glm::quat(w, x, y, z);
+		quaternion *= q;
+		forward = forward * q;
+		up = up * q;
+		left = left * q;
+	}
+
+	if (rollRight > 0) {
+		float rollAngle = glm::radians(-deltaTime * rollRight);
+		float x = forward.x * sin(rollAngle / 2);
+		float y = forward.y * sin(rollAngle / 2);
+		float z = forward.z * sin(rollAngle / 2);
+		float w = cos(rollAngle / 2);
+		glm::quat q = glm::quat(w, x, y, z);
+		quaternion *= q;
+		forward = forward * q;
+		up = up * q;
+		left = left * q;
+	}
+
+	if (pitchUp > 0) {
+		float pitchAngle = glm::radians(deltaTime * pitchUp);
+		float x = left.x * sin(pitchAngle / 2);
+		float y = left.y * sin(pitchAngle / 2);
+		float z = left.z * sin(pitchAngle / 2);
+		float w = cos(pitchAngle / 2);
+		glm::quat q = glm::quat(w, x, y, z);
+		quaternion *= q;
+		forward = forward * q;
+		up = up * q;
+		left = left * q;
+	}
+
+	if (pitchDown > 0) {
+		float pitchAngle = glm::radians(-deltaTime * pitchDown);
+		float x = left.x * sin(pitchAngle / 2);
+		float y = left.y * sin(pitchAngle / 2);
+		float z = left.z * sin(pitchAngle / 2);
+		float w = cos(pitchAngle / 2);
+		glm::quat q = glm::quat(w, x, y, z);
+		quaternion *= q;
+		forward = forward * q;
+		up = up * q;
+		left = left * q;
+	}
+
 	if (yawLeft > 0) {
 		float yawAngle = glm::radians(-deltaTime * yawLeft);
 		float x = up.x * sin(yawAngle / 2);
@@ -193,16 +265,65 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 		up = up * q;
 		left = left * q;
 	}
+}
 
-	position.x += forward.x * deltaTime * 10;
-	position.y += forward.y * deltaTime * 10;
-	position.z += forward.z * deltaTime * 10;
+void Aircraft::move(float deltaTime, Controls control,Camara camara) {
+	if (control.forward == true) {
+		thrust += deltaTime;
+		if (thrust >= CAP_THRUST) {
+			thrust = CAP_THRUST;
+		}
 
-	if (position.y <= 1) {
-		position.y = 1;
-		onLand = true;
+		gravity -= 0.0001f * deltaTime;
+		if (gravity <= 0) {
+			gravity = 0;
+		}
+
+		forwardSpeed += deltaTime;
+		if (forwardSpeed >= CAP_FOR_SPEED) {
+			forwardSpeed = CAP_FOR_SPEED;
+		}
 	}
-	camara.position = position;
-	camara.quaternion = quaternion;
-	camara.direction = forward;
+	else {
+		thrust -= 10 * deltaTime;
+		if (thrust <= 0) {
+			thrust = 0;
+		}
+
+		gravity += 10 * deltaTime;
+		if (gravity >= CAP_GRAVITY) {
+			gravity = CAP_GRAVITY;
+		}
+
+		forwardSpeed += 0.3f * acceleration * GLIDESPEED * deltaTime;
+		forwardSpeed -= GLIDESPEED * deltaTime;
+
+		if (forwardSpeed >= CAP_FOR_SPEED) {
+			forwardSpeed = CAP_FOR_SPEED;
+		}
+
+		if (forwardSpeed <= 0) {
+			forwardSpeed = 0;
+		}
+	}
+
+	if (gravity > 0) {
+		acceleration += gravity * deltaTime;
+	}
+
+	if (thrust > 0) {
+		acceleration -= thrust * deltaTime;
+		if (acceleration <= 0) {
+			acceleration = 0;
+		}
+	}
+
+	position.x += forward.x * deltaTime * forwardSpeed;
+	position.y += forward.y * deltaTime * forwardSpeed * groundYSpeed;
+	position.z += forward.z * deltaTime * forwardSpeed;
+
+	position.y -= acceleration * deltaTime;
+
+
+	
 }

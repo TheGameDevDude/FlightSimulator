@@ -63,17 +63,55 @@ int main() {
 	Model runwayModel(32.0f, "res/textures/runway.png", "res/textures/blank.png", "res/textures/blank.png", "res/models/land.obj");
 	std::vector<Entity> runway;
 	runway.push_back(Entity::Entity(runwayModel, glm::vec3(0, 0, 0), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
+	runway.push_back(Entity::Entity(runwayModel, glm::vec3(0, 0, -8), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
 
 	Model landModel(32.0f, "res/textures/land.png", "res/textures/blank.png", "res/textures/blank.png", "res/models/land.obj");
 	std::vector<Entity> lands;
 	lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, 0), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, 0), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(0, 0, 8), glm::vec3(10, 1, 10), glm::vec3(0, 180, 0)));
-	lands.push_back(Entity::Entity(landModel, glm::vec3(0, 0, -8), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, -8), glm::vec3(10, 1, 10), glm::vec3(0, -180, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, -8), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, 8), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, 8), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+
+	for (int k = 16; k <= 60; k+=8) {
+		lands.push_back(Entity::Entity(landModel, glm::vec3(0, 0, -k), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+		lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, -k), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
+		lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, -k), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
+	}
+
+	for (int d = 8; d >= -60; d -= 8) {
+		for (int u = 16; u <= 60; u += 8) {
+		lands.push_back(Entity::Entity(landModel, glm::vec3(u, 0, d), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+		}
+	}
+
+	for (int d = 8; d >= -60; d -= 8) {
+		for (int u = 16; u <= 60; u += 8) {
+			lands.push_back(Entity::Entity(landModel, glm::vec3(-u, 0, d), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+		}
+	}
+
+
+	for (int k = 16; k <= 60; k += 8) {
+		lands.push_back(Entity::Entity(landModel, glm::vec3(0, 0, k), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+		lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, k), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
+		lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, k), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
+	}
+
+	for (int d = 8; d >= -60; d -= 8) {
+		for (int u = 16; u <= 60; u += 8) {
+			lands.push_back(Entity::Entity(landModel, glm::vec3(u, 0, -d), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+		}
+	}
+
+	for (int d = 8; d >= -60; d -= 8) {
+		for (int u = 16; u <= 60; u += 8) {
+			lands.push_back(Entity::Entity(landModel, glm::vec3(-u, 0, -d), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
+		}
+	}
+
 
 	Aircraft aircraft(glm::vec3(0, 10, 35));
 
