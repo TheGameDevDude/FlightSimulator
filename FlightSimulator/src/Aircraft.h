@@ -39,8 +39,6 @@ private:
 	float forwardSpeed;
 	float acceleration;
 
-	bool onLand;
-	int groundYSpeed;
 public:
 	Aircraft(glm::vec3 position);
 	void tick(Controls control, Camara &camara, float deltaTime);

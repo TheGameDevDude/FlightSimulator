@@ -18,15 +18,6 @@ Aircraft::Aircraft(glm::vec3 position) {
 	thrust = 0;
 	forwardSpeed = 0;
 	acceleration = 0;
-
-	onLand = false;
-
-	if (onLand == false) {
-		groundYSpeed = 1;
-	}
-	else {
-		groundYSpeed = 0;
-	}
 }
 
 void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
@@ -54,9 +45,7 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 			acceleration = 0;
 		}
 		position.y = 1;
-		onLand = true;
 		acceleration = 0;
-		groundYSpeed = 0;
 		float yawAngle = 0;
 		forward = glm::normalize(glm::vec3(forward.x, 0, forward.z));
 		up = glm::vec3(0, 1, 0);
@@ -72,14 +61,6 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 
 		glm::vec3 eulerAngles(0, glm::radians(yawAngle), 0);
 		quaternion = glm::quat(eulerAngles);
-	}
-	else {
-		groundYSpeed = 1;
-		onLand = false;
-	}
-
-	if (thrust > 0) {
-		groundYSpeed = 1;
 	}
 	
 	
@@ -319,7 +300,7 @@ void Aircraft::move(float deltaTime, Controls control,Camara camara) {
 	}
 
 	position.x += forward.x * deltaTime * forwardSpeed;
-	position.y += forward.y * deltaTime * forwardSpeed * groundYSpeed;
+	position.y += forward.y * deltaTime * forwardSpeed;
 	position.z += forward.z * deltaTime * forwardSpeed;
 
 	position.y -= acceleration * deltaTime;
