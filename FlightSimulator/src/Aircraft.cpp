@@ -41,7 +41,7 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 	float roll = glm::degrees(glm::acos(glm::dot(rollLeft, left)));
 
 	if (position.y <= 1) {
-		if (pitch >= 10.0f || roll >= 10.0f) {
+		if (pitch >= 10.0f || roll >= 10.0f || up.y < 0) {
 			std::cout << "CRASH" << std::endl;
 			forward = glm::vec3(0, 0, -1);
 			up = glm::vec3(0, 1, 0);
