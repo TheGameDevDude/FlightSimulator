@@ -44,3 +44,5 @@ Also clamp acceleration to zero
 If the roll or pitch angle is too big or if the plane is upside down and collides with the ground then the plane crashes so i just reset the plane.
 
 I also added a spot light in front of the plane so u can see how close u are with the ground.
+
+use W for thrust and arrow keys for rolling and pitching.
