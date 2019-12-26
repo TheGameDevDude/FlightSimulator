@@ -7,12 +7,12 @@ Heres where i learnt about Quaternions -> http://www.opengl-tutorial.org/interm
 
 so i had to create plane axis forward, up and left, forward pointing the front of the plane, left pointing left of plane so that the forward vector can rotate along left axis as pitch of the plane using quaternions. 
 
-![Plane Axis](https://www.gamedev.net/uploads/monthly_2019_11/1375953994_aircraftaxis.PNG.fb0b034c91bd5817fd94220dfea17561.PNG)
+![Plane Axis](https://uploads.gamedev.net/monthly_2019_11/1375953994_aircraftaxis.PNG.fb0b034c91bd5817fd94220dfea17561.PNG)
 
 
 Here's how i pitch the plane :
 
-![Pitch](https://www.gamedev.net/uploads/monthly_2019_11/pitchRotation.PNG.55a198a559b33b38df1e95e6bdfeea86.PNG)
+![Pitch](https://uploads.gamedev.net/monthly_2019_11/pitchRotation.PNG.55a198a559b33b38df1e95e6bdfeea86.PNG)
 
 and same applies for rolling and yaw, this is how every flight simulator handles orientation.
 
