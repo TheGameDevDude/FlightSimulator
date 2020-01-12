@@ -31,6 +31,7 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 	glm::vec3 rollLeft(left.x, 0, left.z);
 	float roll = glm::degrees(glm::acos(glm::dot(rollLeft, left)));
 
+	//if it hits the ground and roll or pitch is too high or it is upside down then crash
 	if (position.y <= 1) {
 		if (pitch >= 10.0f || roll >= 10.0f || up.y < 0) {
 			std::cout << "CRASH" << std::endl;
@@ -63,13 +64,12 @@ void Aircraft::tick(Controls control, Camara &camara, float deltaTime) {
 		quaternion = glm::quat(eulerAngles);
 	}
 	
-	
 	camara.position = position;
 	camara.quaternion = quaternion;
 	camara.direction = forward;
-
 }
 
+//orient the plane using quaternions
 void Aircraft::orientation(float deltaTime,Controls control) {
 	if (control.leftArrow) {
 		rollLeft += 50 * deltaTime;
@@ -248,6 +248,7 @@ void Aircraft::orientation(float deltaTime,Controls control) {
 	}
 }
 
+//move the plane in the forward direction
 void Aircraft::move(float deltaTime, Controls control,Camara camara) {
 	if (control.forward == true) {
 		thrust += deltaTime;
@@ -276,6 +277,7 @@ void Aircraft::move(float deltaTime, Controls control,Camara camara) {
 			gravity = CAP_GRAVITY;
 		}
 
+		//if it acceerates down it still moves in the forward direction with glidespeed
 		forwardSpeed += 0.3f * acceleration * GLIDESPEED * deltaTime;
 		forwardSpeed -= GLIDESPEED * deltaTime;
 
@@ -304,7 +306,4 @@ void Aircraft::move(float deltaTime, Controls control,Camara camara) {
 	position.z += forward.z * deltaTime * forwardSpeed;
 
 	position.y -= acceleration * deltaTime;
-
-
-	
 }

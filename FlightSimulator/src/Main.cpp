@@ -52,6 +52,7 @@ int main() {
 	Controls control(window);
 	Camara camara(glm::vec3(0, 0, 0), 0, 0, 0);
 
+	//lighting
 	DirectionalLight directionalLight(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(1.0f, 0.5f, 0.1f), glm::vec3(1.0f, 0.5f, 0.1f));
 	std::vector<PointLight> pointLights;
 	pointLights.push_back(PointLight::PointLight(glm::vec3(0.5f, 4.0f, 0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), 0.5f, 0.09f, 0.032f));
@@ -60,13 +61,14 @@ int main() {
 	
 	Renderer renderer(width, height);
 
+	//model loader
 	Model runwayModel(32.0f, "res/textures/runway.png", "res/textures/blank.png", "res/textures/blank.png", "res/models/land.obj");
-	std::vector<Entity> runway;
+	std::vector<Entity> runway;//runway models
 	runway.push_back(Entity::Entity(runwayModel, glm::vec3(0, 0, 0), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
 	runway.push_back(Entity::Entity(runwayModel, glm::vec3(0, 0, -8), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
 
 	Model landModel(32.0f, "res/textures/land.png", "res/textures/blank.png", "res/textures/blank.png", "res/models/land.obj");
-	std::vector<Entity> lands;
+	std::vector<Entity> lands;//land models
 	lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, 0), glm::vec3(10, 1, 10), glm::vec3(0, 0, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, 0), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(0, 0, 8), glm::vec3(10, 1, 10), glm::vec3(0, 180, 0)));
@@ -75,6 +77,7 @@ int main() {
 	lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, 8), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
 	lands.push_back(Entity::Entity(landModel, glm::vec3(8, 0, 8), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
 
+	//putting more landEntities in lands 
 	for (int k = 16; k <= 60; k+=8) {
 		lands.push_back(Entity::Entity(landModel, glm::vec3(0, 0, -k), glm::vec3(10, 1, 10), glm::vec3(0, -90, 0)));
 		lands.push_back(Entity::Entity(landModel, glm::vec3(-8, 0, -k), glm::vec3(10, 1, 10), glm::vec3(0, 90, 0)));
@@ -112,7 +115,7 @@ int main() {
 		}
 	}
 
-
+	//point camera plane
 	Aircraft aircraft(glm::vec3(0, 10, 35));
 
 	double prevTime = glfwGetTime();
@@ -125,9 +128,9 @@ int main() {
 		float deltaTime = float(currentTime - prevTime);
 		prevTime = currentTime;
 
-		//camara.move(control, deltaTime);
 		aircraft.tick(control, camara, deltaTime);
 
+		//putting spotlight in front of the point camera plane
 		spotLights[0].position = camara.position;
 		spotLights[0].direction = camara.direction;
 		renderer.lighting(directionalLight, pointLights, spotLights, camara);

@@ -107,34 +107,10 @@
     <None Include="res\shaders\fragmentShader.shader" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\textures\container.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\container2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\container2_specular.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\lighting_maps_specular_color.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\textures\blank.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\textures\grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\grass_specular.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\Plane_diffuse.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\textures\runway.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\planeDiffuse.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\textures\land.png">

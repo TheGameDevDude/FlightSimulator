@@ -163,15 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\blank.png" />
-    <Image Include="res\textures\container.png" />
-    <Image Include="res\textures\container2.png" />
-    <Image Include="res\textures\container2_specular.png" />
-    <Image Include="res\textures\grass.png" />
-    <Image Include="res\textures\grass_specular.png" />
     <Image Include="res\textures\land.png" />
-    <Image Include="res\textures\lighting_maps_specular_color.png" />
-    <Image Include="res\textures\planeDiffuse.png" />
-    <Image Include="res\textures\Plane_diffuse.png" />
     <Image Include="res\textures\runway.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

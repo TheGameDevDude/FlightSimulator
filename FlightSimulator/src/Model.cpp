@@ -19,8 +19,6 @@ Model::Model(float shininess, char const * diffuse_path, char const * specular_p
 
 	bool res = OBJLoader::loadOBJ(buffer, vertices, uvs, normals);
 
-
-
 	std::vector<unsigned int> indices;
 	std::vector<glm::vec3> ind_vertices;
 	std::vector<glm::vec2> ind_uvs;
