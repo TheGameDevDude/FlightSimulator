@@ -20,7 +20,7 @@ And for torque i had to multiply with a variable that increases then becomes con
 
 in order for the plane to move forward i just incremented the forward vector and scaled it with a "forwardSpeed" variable.
 
-Heres the sudo code for move function->
+Heres the pseudo  code for move function->
 ```
 if(W key){
     thrust += deltaTime;
