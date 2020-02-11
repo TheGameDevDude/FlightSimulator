@@ -1,7 +1,7 @@
 # FlightSimulator
 I am using the camera as the plane.
 
-Every plane has pitch, yaw and roll and i tried to achieve this my using euler angle rotation matrices and failed miserably and after long hours of googling i found that they use Quaternions because u can rotate along a vector in any direction unlike euler rotation where u are only constrained to rotate along the 3 axis.
+Every plane has pitch, yaw and roll and i tried to achieve this by using euler angle rotation matrices and failed miserably and after long hours of googling i found that they use Quaternions because u can rotate along a vector in any direction unlike euler rotation where u are only constrained to rotate along the 3 axis.
 
 Heres where i learnt about Quaternions -> http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
 
