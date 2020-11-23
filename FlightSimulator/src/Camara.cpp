@@ -5,7 +5,9 @@ Camara::Camara() {
 	position = glm::vec3(0, 0, 0);
 	angleX = 0;
 	angleY = 0;
+	angleZ = 0;
 	direction = glm::vec3(0, 0, -1);
+	quaternion = glm::quat(1, 0, 0, 0);
 }
 
 Camara::Camara(glm::vec3 position, float angleX, float angleY,float angleZ) {
@@ -14,10 +16,13 @@ Camara::Camara(glm::vec3 position, float angleX, float angleY,float angleZ) {
 	this->angleY = angleY;
 	this->angleZ = angleZ;
 	direction = glm::vec3(0, 0, -1);
+	quaternion = glm::quat(1, 0, 0, 0);
 }
 
-glm::mat4 Camara::getViewMatrix(bool useQuaternion) const {
+glm::mat4 Camara::getViewMatrix(bool useQuaternion) {
 	if (useQuaternion == true) {
+		glm::vec4 dir = glm::vec4(0, 0, -1, 0) * toMat4(quaternion);
+		direction = glm::vec3(dir.x, dir.y, dir.z);
 		return glm::toMat4(quaternion) * glm::translate(glm::mat4(1.0f), glm::vec3(-position.x, -position.y, -position.z));
 	}
 	else {

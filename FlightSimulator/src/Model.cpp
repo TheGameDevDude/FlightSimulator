@@ -65,13 +65,13 @@ Model::Model(float shininess, char const * diffuse_path, char const * specular_p
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 
-	vertices.end();
-	uvs.end();
-	normals.end();
-	indices.end();
-	ind_vertices.end();
-	ind_uvs.end();
-	ind_normals.end();
+	vertices.clear();
+	uvs.clear();
+	normals.clear();
+	indices.clear();
+	ind_vertices.clear();
+	ind_uvs.clear();
+	ind_normals.clear();
 }
 
 void Model::clear() {

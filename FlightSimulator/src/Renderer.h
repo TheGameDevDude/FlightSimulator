@@ -15,9 +15,9 @@
 
 class Renderer {
 private:
-	Shader shader;
 	int width;
 	int height;
+	Shader shader;
 public:
 	Renderer(int width, int height);
 	void render(std::vector<Entity> entities, Camara camara);

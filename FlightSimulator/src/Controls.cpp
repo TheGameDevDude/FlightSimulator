@@ -10,8 +10,13 @@ Controls::Controls(GLFWwindow* window) {
 	downArrow = false;
 	flyUp = false;
 	flyDown = false;
+	keyA = false;
+	keyD = false;
 	mouseDX = 0.0f;
 	mouseDY = 0.0f;
+	mouseX = 0.0f;
+	mouseY = 0.0f;
+	glfwGetWindowSize(window, &windowWidth, &windowHeight);
 }
 
 void Controls::tick() {

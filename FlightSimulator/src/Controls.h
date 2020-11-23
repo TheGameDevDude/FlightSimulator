@@ -27,8 +27,8 @@ private:
 	GLFWwindow* window;
 public:
 	Controls(GLFWwindow* window);
-	void tick();//for updating the mouse and keyboard input
+	void tick();
 private:
-	void mouse();//getting input from the mouse
-	void keyboard();//getting input from the keyboard
+	void mouse();
+	void keyboard();
 };

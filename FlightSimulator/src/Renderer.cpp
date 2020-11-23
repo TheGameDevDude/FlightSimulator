@@ -12,6 +12,7 @@ Renderer::Renderer(int width, int height) {
 }
 
 void Renderer::render(std::vector<Entity> entities, Camara camara) {
+	// passing material propereties to the shader
 	shader.setFloat("material.shininess", entities[0].getModel().shininess);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, entities[0].getModel().diffuseTexture);
@@ -23,13 +24,19 @@ void Renderer::render(std::vector<Entity> entities, Camara camara) {
 	glBindTexture(GL_TEXTURE_2D, entities[0].getModel().emissionTexture);
 	shader.setInt("material.emission", 2);
 
+	// binding VAO
+	glBindVertexArray(entities[0].getModel().vertexArrayID);
+
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		glm::mat4 view = camara.getViewMatrix(true);
 		shader.setMat4("view", view);
 		shader.setMat4("model", entities[i].modelMatrix);
-		glBindVertexArray(entities[i].getModel().vertexArrayID);
+		// rendering
 		glDrawElements(GL_TRIANGLES, entities[i].getModel().indicesSize, GL_UNSIGNED_INT, NULL);
 	}
+
+	// unbinding VAO
+	glBindVertexArray(0);
 }
 
 void Renderer::lighting(DirectionalLight directionalLight, std::vector<PointLight> pointLights, std::vector<SpotLight> spotLights, Camara camara) {
