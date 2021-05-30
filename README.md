@@ -1,6 +1,6 @@
 # FlightSimulator
 
-![](ScreenShots/yayplane.png)
+![](ScreenShots/yayPlane.png)
 
 A basic point camera flight simulator.
 
