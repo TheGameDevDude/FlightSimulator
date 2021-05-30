@@ -5,7 +5,7 @@
 A basic point camera flight simulator.
 
 # Running the executable
-+ Download the latest executable form the releases page.
++ Download the latest executable form the [releases page](https://github.com/TheGameDevDude/FlightSimulator/releases/tag/v0.1).
 + The executable only works on windows.
 
 # controls
