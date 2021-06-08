@@ -19,7 +19,7 @@ A basic point camera flight simulator.
 | Roll | <kbd>←</kbd> <kbd>→</kbd> |
  
 # How the plane fly's
-Every plane has pitch, yaw, and roll and I tried to achieve this by using Euler angle rotation matrices and failed miserably and after long hours of googling, I found that they use Quaternions because u can rotate along a vector in any direction, unlike Euler rotation where you are only constrained to rotating along the 3 axes.
+Every plane has pitch, yaw, and roll and I tried to achieve this by using Euler angle rotation matrices and failed miserably and after long hours of googling, I found that they use Quaternions because its easier to rotate along any direction compared to euler.
 
 Here's where I learned about Quaternions: http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
 
@@ -59,9 +59,9 @@ Acceleration -= thrust;
 Ypos -= Acceleration;
 Also clamp acceleration to zero
 ```
-If the roll or pitch angle is too big or if the plane is upside down and collides with the ground then the plane crashes so i just reset the plane.
+If the roll or pitch angle is too big or if the plane is upside down and collides with the ground then the plane crashes so I just reset the plane.
 
-I also added a spot light in front of the plane so u can see how close u are with the ground.
+I also added a spot light in front of the plane so you can see how close you are with the ground.
 
 use W for thrust and arrow keys for rolling and pitching.
 
